@@ -47,7 +47,7 @@ export default function Login() {
         >
             <article className="row-start-2 row-end-6  dark:bg-black drop-shadow-xl border-2 border-white justify-start w-full h-full">
                 <div className="w-full bg-gray-100 flex pl-2">
-                    <h1 className="text-base">[2진 4팀] 기도제목 한줄 나눔</h1>
+                    <h1 className="text-base">[2청 2진] 기도제목 한줄 나눔</h1>
                 </div>
 
                 <section className="w-full h-[90%] p-5 flex flex-col justify-center items-center">

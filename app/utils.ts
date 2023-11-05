@@ -1,8 +1,9 @@
 import { MemberStorage } from "@/app/queryProps";
 import { Session } from "next-auth";
 
-export const MAX_INPUT_LENGTH = 70;
+const SAMIL_PR_LS_KEY = process.env.SAMIL_PR_LS_KEY || "temp-key";
 
+export const MAX_INPUT_LENGTH = 70;
 export const REGIST_GUIDE = {
     LOADING: "기도제목을 등록하고 있습니다..",
     SUCCESS: "등록이 완료되었습니다!",
@@ -138,7 +139,7 @@ export const Validator = (() => {
 export function getMember(session: Session | null): MemberStorage | null {
     function getMemberByLocalStorage() {
         if (typeof window !== "undefined") {
-            const member = localStorage.getItem("samil-pr-member");
+            const member = localStorage.getItem(SAMIL_PR_LS_KEY);
             if (member) {
                 return JSON.parse(member) as MemberStorage;
             }
@@ -147,7 +148,7 @@ export function getMember(session: Session | null): MemberStorage | null {
 
     function setMemberByLocalStorage(member: MemberStorage) {
         if (typeof window !== "undefined") {
-            localStorage.setItem("samil-pr-member", JSON.stringify(member));
+            localStorage.setItem(SAMIL_PR_LS_KEY, JSON.stringify(member));
         }
     }
 
@@ -170,6 +171,6 @@ export function getMember(session: Session | null): MemberStorage | null {
 
 export function deleteMemberInLocalStorage() {
     if (typeof window !== "undefined") {
-        localStorage.removeItem("samil-pr-member");
+        localStorage.removeItem(SAMIL_PR_LS_KEY);
     }
 }
