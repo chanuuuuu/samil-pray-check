@@ -1,27 +1,79 @@
+@font-face {
+    font-family: "sam";
+    src: url("../public/font/Sam3KRFont.ttf");
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.footer {
+    font-size: 0.55rem;
+    text-align: center;
+    width: 100%;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.content {
+    transition: 0.55s ease-in-out;
+    opacity: 0;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.content-wrapper {
+    transition: max-height 0.5s ease-in-out;
+    max-height: 0px;
+}
+
+details[open] + .content-wrapper {
+    max-height: 500px; /*auto*/
+}
+
+details[open] + .content-wrapper > .content {
+    opacity: 1;
+}
+
+.request-group {
+    transition: 0.5s ease-in-out;
+    opacity: 0;
+}
+
+.request-group[data-active] {
+    opacity: 100;
+}
+
+.trans-button {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#pray-mode-section {
+    transition: 1s ease-in-out;
+    opacity: 0;
+}
+
+#pray-mode-section[data-active] {
+    opacity: 100;
+}
+
+#regist-mode-section {
+    transition: 1s ease-in-out;
+    opacity: 0;
+}
+
+#regist-mode-section[data-active] {
+    opacity: 95%;
+}
+
+.prefix {
+    color: #21f838;
+}
+
+textarea {
+    /* color: #21f838; */
+    /* font-family: courier; */
+    caret-color: #21f838;
+    outline: none;
+}
+
+.warning-length {
+    display: none;
 }
