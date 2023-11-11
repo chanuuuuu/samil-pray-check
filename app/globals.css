@@ -14,7 +14,7 @@
 }
 
 .content {
-    transition: 0.55s ease-in-out;
+    transition: 0.5s ease-in-out;
     opacity: 0;
 }
 
@@ -46,7 +46,7 @@ details[open] + .content-wrapper > .content {
 }
 
 #pray-mode-section {
-    transition: 1s ease-in-out;
+    transition: 0.5s ease-in-out;
     opacity: 0;
 }
 
@@ -55,7 +55,7 @@ details[open] + .content-wrapper > .content {
 }
 
 #regist-mode-section {
-    transition: 1s ease-in-out;
+    transition: 0.5s ease-in-out;
     opacity: 0;
 }
 
