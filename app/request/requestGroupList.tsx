@@ -18,7 +18,9 @@ export default function RequestGroupList(props: {
             if (groupSectionElement) {
                 const delay = 0.45 * index;
                 groupSectionElement.style.transitionDelay = delay + "s";
-                groupSectionElement.dataset.active = "true";
+                setTimeout(() => {
+                    groupSectionElement.dataset.active = "true";
+                }, 100);
             }
         });
     }, [isLoading, requestGroups]);
