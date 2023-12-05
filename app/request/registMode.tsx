@@ -177,7 +177,7 @@ export default function RegistMode(props: {
 
     return (
         <section
-            className="absolute top-0 z-20 w-screen bg-slate-800 h-full max-h-screen text-base flex items-center opacity-100"
+            className="absolute top-0 z-20 w-screen bg-slate-800 h-full max-h-m-screen text-base flex items-center opacity-100"
             id="regist-mode-section"
         >
             <div className="ml-2 mr-2 p-1 w-full flex flex-col justify-center items-center">
@@ -250,11 +250,11 @@ export default function RegistMode(props: {
                                         type="button"
                                         className="trans-button mb-2"
                                         onClick={clickAddPrayRequest}
-                                    >{`[기도제목 추가]`}</button>
+                                    >{`[하나 더 쓰기]`}</button>
                                     <button
                                         type="submit"
                                         className="trans-button"
-                                    >{`[등록]`}</button>
+                                    >{`[등록하기]`}</button>
                                 </>
                             )}
                             {isLoading && (

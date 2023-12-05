@@ -84,9 +84,9 @@ export default function Home() {
     }
 
     return (
-        <section className="flex h-screen flex-col text-sm tracking-tight leading-tight">
+        <section className="flex h-m-screen flex-col text-sm tracking-tight leading-tight">
             <Header toggleMode={toggleMode} />
-            <main className="mt-3 mb-2 max-h-screen overflow-y-scroll">
+            <main className="mt-3 mb-2 max-h-m-screen overflow-y-scroll">
                 <ReqeustTypeMenu
                     menuType={menuType}
                     setMenuType={setMenuType}

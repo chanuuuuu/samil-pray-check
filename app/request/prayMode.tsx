@@ -29,7 +29,7 @@ export default function PrayMode(props: {
 
     return (
         <section
-            className="absolute top-0 z-20 w-screen bg-black h-full max-h-screen font-sans overflow-y-scroll"
+            className="absolute top-0 z-20 w-screen bg-black h-full max-h-m-screen font-sans overflow-y-scroll"
             id="pray-mode-section"
         >
             <div className="mt-6 p-3 pt-2 pb-2">

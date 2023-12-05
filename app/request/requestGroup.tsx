@@ -36,8 +36,8 @@ export default function RequestGroup(props: {
                         }
                     >
                         <img
-                            src="/hyphen.svg"
-                            className="w-5 h-fill  border-solid shadow-xs border border-r-2 border-gray-700 shadow-black"
+                            src={isClose ? "/plus.svg" : "/hyphen.svg"}
+                            className="w-5 h-fill border-solid shadow-xs border border-r-2 border-gray-700 shadow-black"
                         ></img>
                     </button>
                 </summary>

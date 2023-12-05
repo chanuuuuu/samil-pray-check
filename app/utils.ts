@@ -15,7 +15,6 @@ export function getInsertId() {
     const year = now.getFullYear().toString().slice(2);
     const month = ("0" + (now.getMonth() + 1)).slice(-2);
     const day = ("0" + now.getDate()).slice(-2);
-    // TODO: 뒤의 hour, min도 0을 추가하자.
     const hour = now.getHours();
     const min = now.getMinutes();
     const formattedHour = (hour < 10 ? "0" : "") + hour;
@@ -173,4 +172,19 @@ export function deleteMemberInLocalStorage() {
     if (typeof window !== "undefined") {
         localStorage.removeItem(SAMIL_PR_LS_KEY);
     }
+}
+
+export function redirectKakaoToBrowser() {
+    const useragt = navigator.userAgent.toLowerCase();
+    const target_url = location.href;
+    if (useragt.match(/kakaotalk/i)) {
+        location.href =
+            "kakaotalk://web/openExternal?url=" +
+            encodeURIComponent(target_url);
+    }
+}
+
+export function resizeMWsize() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
 }
