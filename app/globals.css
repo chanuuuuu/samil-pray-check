@@ -7,6 +7,15 @@
 @tailwind components;
 @tailwind utilities;
 
+summary::-webkit-details-marker {
+    /* Safari 브라우저용 사용자 정의 스타일 */
+    display: none;
+}
+
+details > summary {
+    display: block; /* 그 외의 브라우저용 사용자 정의 스타일 */
+}
+
 .footer {
     font-size: 0.55rem;
     text-align: center;
