@@ -8,6 +8,7 @@ export const REGIST_GUIDE = {
     LOADING: "기도제목을 등록하고 있습니다..",
     SUCCESS: "등록이 완료되었습니다!",
     FAIL: "등록이 실패하였습니다.\n간사님께 문의하세요.",
+    OVER_LENGTH: "한 번에 5개까지 공유가 가능합니다.",
 };
 
 export function getInsertId() {
@@ -36,7 +37,10 @@ export function getWeekDay(day?: string) {
     var weekDay = Math.floor(diffDate / 7) + 1;
     if (now.getDay() < start.getDay()) weekDay += 1;
 
-    return weekDay;
+    const year = now.getFullYear().toString().slice(2);
+    const formattedWeekDay = (weekDay < 10 ? "0" : "") + weekDay;
+
+    return parseInt(year + formattedWeekDay);
 }
 
 export function activeElement(element: HTMLElement | null) {

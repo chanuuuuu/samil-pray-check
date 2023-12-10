@@ -92,7 +92,7 @@ export default function RegistMode(props: {
 
     function clickAddPrayRequest() {
         if (newPrayRequestList.length >= 5) {
-            alert("한 번에 5개까지 공유가 가능합니다.");
+            alert(REGIST_GUIDE.OVER_LENGTH);
             return;
         }
         let lastId = 0;
