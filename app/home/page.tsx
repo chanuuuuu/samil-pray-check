@@ -97,7 +97,6 @@ export default function Home() {
                     {isLoading && <RequestLoading />}
                     {!isLoading && (
                         <RequestGroupList
-                            isLoading={isLoading}
                             closedMember={closedMember}
                             requestGroups={filteredGroups}
                         />

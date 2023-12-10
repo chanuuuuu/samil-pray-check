@@ -1,38 +1,27 @@
 "use client";
-import { useEffect, MutableRefObject } from "react";
+import { MutableRefObject } from "react";
 import RequestGroup from "./requestGroup";
 import { PrayerRequestGroup } from "./requestProps";
+import MemberWrapper from "./memberWrapper";
 
 export default function RequestGroupList(props: {
     closedMember: MutableRefObject<Set<number>>;
-    isLoading: boolean;
     requestGroups: PrayerRequestGroup[];
 }) {
-    const { closedMember, isLoading, requestGroups } = props;
-
-    useEffect(() => {
-        requestGroups.forEach((group, index) => {
-            const groupSectionElement = document.getElementById(
-                `request_group_section_${group.memberId}`
-            );
-            if (groupSectionElement) {
-                const delay = 0.45 * index;
-                groupSectionElement.style.transitionDelay = delay + "s";
-                setTimeout(() => {
-                    groupSectionElement.dataset.active = "true";
-                }, 100);
-            }
-        });
-    }, [isLoading, requestGroups]);
+    const { closedMember, requestGroups } = props;
 
     return (
         <>
-            {requestGroups.map((group) => (
-                <RequestGroup
-                    prayerRequestGroup={group}
+            {requestGroups.map((group, index) => (
+                <MemberWrapper
+                    member={group}
+                    index={index}
                     closedMember={closedMember}
                     key={group.memberId}
-                />
+                    sectionId={`request_group_section_${group.memberId}`}
+                >
+                    <RequestGroup requests={group.requests}></RequestGroup>
+                </MemberWrapper>
             ))}
         </>
     );

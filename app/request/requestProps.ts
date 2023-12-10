@@ -1,14 +1,15 @@
-export interface PrayerRequest {
+export interface Member {
     memberId: number;
-    insertId: number;
     name: string;
+}
+
+export interface PrayerRequest extends Member {
+    insertId: number;
     request: string;
 }
 
-export interface PrayerRequestGroup {
-    memberId: number;
+export interface PrayerRequestGroup extends Member {
     insertId: number;
-    name: string;
     requests: string[];
 }
 
