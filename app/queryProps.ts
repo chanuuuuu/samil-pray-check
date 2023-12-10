@@ -13,4 +13,5 @@ export interface MemberStorage {
     name: string;
     cellId: number;
     groupId: number;
+    role: number;
 }
