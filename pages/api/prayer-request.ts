@@ -7,7 +7,7 @@ import {
     convertPrayerResult,
     convertCellMember,
     HomeDto,
-} from "@/app/request/requestProps";
+} from "@/app/(common)/requestProps";
 
 const MEMBER_TABLE = process.env.MEMBER_TARGET_TABLE;
 const PRAYER_REQUEST_TABLE = process.env.PRAYER_REQUEST_TARGET_TABLE;

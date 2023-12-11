@@ -1,6 +1,9 @@
 "use client";
 import { useMemo, useLayoutEffect, useState, useEffect } from "react";
-import { PrayerRequestGroup, PrayerRequestInput } from "./requestProps";
+import {
+    PrayerRequestGroup,
+    PrayerRequestInput,
+} from "../(common)/requestProps";
 import {
     ElementUtils,
     Validator,

@@ -1,7 +1,7 @@
 "use client";
 import { MutableRefObject } from "react";
 import RequestGroup from "./requestGroup";
-import { PrayerRequestGroup } from "./requestProps";
+import { PrayerRequestGroup } from "../(common)/requestProps";
 import MemberWrapper from "./memberWrapper";
 
 export default function RequestGroupList(props: {
