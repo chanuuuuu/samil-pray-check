@@ -8,6 +8,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     async function getMember(
         credentials: Record<"name" | "password" | "group", string> | undefined
     ) {
+        // TODO: 그룹을 사용하도록 구현 필요
         const checkQuery = `
                     SELECT *
                     FROM Member
