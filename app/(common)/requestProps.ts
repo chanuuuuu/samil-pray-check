@@ -1,6 +1,7 @@
 export interface Member {
     memberId: number;
     name: string;
+    birth?: string;
 }
 
 export interface PrayerRequest extends Member {

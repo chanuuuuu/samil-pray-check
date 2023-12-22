@@ -1,13 +1,17 @@
 import { Member } from "./requestProps";
 
 export interface CheckDto {
-    myCellMember: number[];
+    myCellMember: Member[];
     myCheckList: Check[];
 }
 
-export interface Check extends Member {
+export interface CheckItems {
     worship: boolean;
     community: boolean;
+}
+
+export interface Check extends Member, Partial<CheckItems> {
+    checked?: boolean;
 }
 
 // DB to CheckList

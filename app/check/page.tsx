@@ -8,11 +8,13 @@ import ToggleMenu from "../(common)/toggleMenu";
 import RequestLoading from "../request/requestLoading";
 import { CHECK_TYPE_CODE, checkTypes } from "../(common)/menuTypeProps";
 import { CheckDto, Check } from "../(common)/checkProps";
+import { Member } from "@/app/(common)/requestProps";
+import CheckList from "./checkList";
 
-export default function Check() {
+export default function MemberCheck() {
     const { data: session } = useSession();
     const router = useRouter();
-    const [cellMember, setCellMember] = useState<number[]>([]);
+    const [cellMember, setCellMember] = useState<Member[]>([]);
     const [checkList, setCheckList] = useState<Check[]>([]);
     const [selectedMenuType, setMenuType] = useState<string>(
         CHECK_TYPE_CODE.등록
@@ -50,6 +52,27 @@ export default function Check() {
         }
     }, [member]);
 
+    const filteredCheckList = useMemo(() => {
+        if (selectedMenuType == CHECK_TYPE_CODE.등록) {
+            return cellMember.map((_member) => {
+                const checkData = checkList.find(
+                    (check) => _member.memberId === check.memberId
+                );
+                if (checkData) {
+                    return {
+                        ...checkData,
+                        checked: true,
+                    };
+                }
+                return {
+                    ..._member,
+                    checked: false,
+                };
+            });
+        }
+        return checkList;
+    }, [selectedMenuType, checkList]);
+
     return (
         <section className="flex h-m-screen flex-col text-sm tracking-tight leading-tight">
             <Header toggleMode={() => {}} />
@@ -63,7 +86,7 @@ export default function Check() {
                 />
                 <section className="border-l-2 border-r-2 border-b-4 border-black ml-2 mr-2 p-2 dark:bg-slate-400 shadow-slate-500/70">
                     {isLoading && <RequestLoading />}
-                    {!isLoading && <div>본문입니다.</div>}
+                    {!isLoading && <CheckList checkList={filteredCheckList} />}
                 </section>
             </main>
         </section>

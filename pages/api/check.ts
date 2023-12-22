@@ -2,8 +2,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { doConnectionQuery, doQuery } from "./models/doQuery";
 import pool from "./models/connectionPool";
 import { getWeekDay, getInsertId } from "@/app/utils";
-import { PrayerRequest, convertCellMember } from "@/app/(common)/requestProps";
+import { PrayerRequest } from "@/app/(common)/requestProps";
 import { CheckDto, convertCheckList } from "@/app/(common)/checkProps";
+import { Member } from "@/app/(common)/requestProps";
 
 const MEMBER_TABLE = process.env.MEMBER_TARGET_TABLE;
 const CHECK_TABLE = process.env.CHECK_TARGET_TABLE;
@@ -16,11 +17,10 @@ const fetchCheckInitData = ({
     groupId: string;
 }): Promise<CheckDto> => {
     const cellMemberQuery = `
-                SELECT memberId
+                SELECT memberId, name, birth
                 FROM ${MEMBER_TABLE}
                 WHERE groupId = ? AND cellId = ?`;
 
-    // LEFT JOIN 필요
     const requestQuery = `
                 SELECT memberId, insertId, name, cellId, worship, community
                 FROM ${CHECK_TABLE} JOIN Member USING (memberId)
@@ -42,7 +42,7 @@ const fetchCheckInitData = ({
                         connection,
                         queryState: cellMemberQuery,
                         params: [groupId, cellId],
-                    }) as Promise<number[]>,
+                    }) as Promise<Member[]>,
                     doConnectionQuery({
                         connection,
                         queryState: requestQuery,
@@ -50,9 +50,8 @@ const fetchCheckInitData = ({
                     }) as Promise<PrayerRequest[]>,
                     new Promise((resolve) => setTimeout(resolve, 1500)),
                 ])
-                    .then(([cellMemberData, prayerRequestData, unknown]) => {
-                        const myCellMember = convertCellMember(cellMemberData);
-                        const myCheckList = convertCheckList(prayerRequestData);
+                    .then(([myCellMember, checkListData, unknown]) => {
+                        const myCheckList = convertCheckList(checkListData);
                         connection.release();
                         resolve({
                             myCellMember,
@@ -107,15 +106,16 @@ export default async function handler(
         const url = new URL(req.headers.referer);
         if (url.pathname.includes("home")) {
             if (req.method === "POST") {
-                const { memberId, prayerRequests } = req.body;
-                await insertPrayerRequest(memberId, prayerRequests)
-                    .then(() => {
-                        res.status(201).end();
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        res.status(501).end();
-                    });
+                // const { memberId, prayerRequests } = req.body;
+                // await insertPrayerRequest(memberId, prayerRequests)
+                //     .then(() => {
+                //         res.status(201).end();
+                //     })
+                //     .catch((error) => {
+                //         console.log(error);
+                //         res.status(501).end();
+                //     });
+                res.status(201).end();
             } else if (req.method === "GET") {
                 let result: CheckDto = {
                     myCellMember: [],
