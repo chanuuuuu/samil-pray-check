@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, MutableRefObject, ReactNode } from "react";
-import { Member } from "../(common)/requestProps";
+import { Member } from "./requestProps";
 
 export default function MemberWrapper(props: {
     member: Member;
