@@ -4,6 +4,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { doQuery } from "../models/doQuery";
 import { Member } from "@/app/queryProps";
 
+const MEMBER_TABLE = process.env.MEMBER_TARGET_TABLE;
+
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     async function getMember(
         credentials: Record<"name" | "password" | "group", string> | undefined
@@ -11,7 +13,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         // TODO: 그룹을 사용하도록 구현 필요
         const checkQuery = `
                     SELECT *
-                    FROM Member
+                    FROM ${MEMBER_TABLE}
                     WHERE name = ? AND birth = ?`;
         const _response = await doQuery(checkQuery, [
             credentials?.name,
