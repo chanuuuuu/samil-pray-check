@@ -1,6 +1,6 @@
 "use client";
 import { useMemo, useLayoutEffect, MutableRefObject } from "react";
-import { PrayerRequestGroup } from "./requestProps";
+import { PrayerRequestGroup } from "../(common)/requestProps";
 
 export default function PrayMode(props: {
     isPrayMode: boolean;

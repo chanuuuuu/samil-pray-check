@@ -162,6 +162,7 @@ export function getMember(session: Session | null): MemberStorage | null {
             name: user.name,
             cellId: user.cellId,
             groupId: user.groupId,
+            role: user.role,
         };
         setMemberByLocalStorage(member);
         return member;
