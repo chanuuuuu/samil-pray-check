@@ -1,6 +1,12 @@
 "use client";
 
-import { useState, useEffect, MutableRefObject, ReactNode } from "react";
+import {
+    useState,
+    useEffect,
+    MutableRefObject,
+    ReactNode,
+    useMemo,
+} from "react";
 import { Member } from "./requestProps";
 
 export default function MemberWrapper(props: {
@@ -26,13 +32,17 @@ export default function MemberWrapper(props: {
     useEffect(() => {
         const groupSectionElement = document.getElementById(sectionId);
         if (groupSectionElement) {
-            const delay = 0.45 * index;
+            const delay = 0.35 * index;
             groupSectionElement.style.transitionDelay = delay + "s";
             setTimeout(() => {
                 groupSectionElement.dataset.active = "true";
             }, 100);
         }
     }, []);
+
+    const memberFullName = member?.gisu
+        ? `${member.name}(${member.gisu}기)`
+        : member.name;
 
     return (
         <article
@@ -42,7 +52,7 @@ export default function MemberWrapper(props: {
             <details open={!isClose} onClick={(e) => e.preventDefault()}>
                 <summary className="w-full bg-gray-100 flex flex-row justify-between pl-2">
                     <span className="dark:text-black text-sm">
-                        {member.name}
+                        {memberFullName}
                     </span>
                     <button onClick={() => toggleMemberClose(member.memberId)}>
                         <img

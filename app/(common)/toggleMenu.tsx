@@ -1,6 +1,7 @@
 "use client";
 import { Dispatch, SetStateAction } from "react";
 import { MenuType } from "./menuTypeProps";
+import { getWeekCount } from "@/app/utils";
 
 export default function ToggleMenu(props: {
     selectedMenuType: string;
@@ -38,15 +39,20 @@ export default function ToggleMenu(props: {
         }, 6000);
     }
 
+    const week = getWeekCount(new Date());
+
     return (
         <div className="sticky ml-2 mr-2 flex flex-row justify-between dark:bg-white border-t-2 border-l border-r-2 border-black">
             <menu className="flex flex-row flex-initial">
                 <li className="p-1 bg-slate-400 border border-t-0 drop-shadow-md border-black">
-                    선택
+                    {`${week}주차`}
                 </li>
-                {menuTypes.map((menuType) => {
+                {menuTypes.map((menuType, index) => {
                     return (
-                        <li className="dark:bg-white pl-5 pr-5 p-1 font-semibold text-gray-800">
+                        <li
+                            className="dark:bg-white pl-5 pr-5 p-1 font-semibold text-gray-800"
+                            key={`${index}_${menuType.code}`}
+                        >
                             <button
                                 className={
                                     "trans-button " +

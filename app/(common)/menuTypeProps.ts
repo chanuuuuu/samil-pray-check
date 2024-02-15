@@ -27,7 +27,7 @@ export const CHECK_TYPE_CODE = {
 export const checkTypes: MenuType[] = [
     {
         code: CHECK_TYPE_CODE.등록,
-        name: "등록",
+        name: "출석등록",
     },
     {
         code: CHECK_TYPE_CODE.팀별현황,

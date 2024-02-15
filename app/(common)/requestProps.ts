@@ -1,7 +1,9 @@
 export interface Member {
+    groupId?: number;
     memberId: number;
     name: string;
     birth?: string;
+    gisu?: number;
 }
 
 export interface PrayerRequest extends Member {

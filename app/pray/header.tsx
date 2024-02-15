@@ -33,7 +33,7 @@ export default function Header(props: { toggleMode: (type: string) => void }) {
                         <button
                             className="border-solid shadow-xs border-2 border-l-1 border-r-1 border-gray-700 shadow-black pl-1 pr-1"
                             onClick={() => router.push("/check")}
-                            hidden
+                            //hidden
                         >
                             출석부
                         </button>

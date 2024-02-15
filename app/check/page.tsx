@@ -31,16 +31,17 @@ export default function MemberCheck() {
             cellId: `${member?.cellId || 0}`,
             groupId: `${member?.groupId || 0}`,
         });
-        const result = await fetch("/api/check?" + paramUrl, {
+        const result = await fetch("/api/checks?" + paramUrl, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
             },
         });
-        const data: CheckDto = await result.json();
-        console.log(data);
-        setCellMember(data?.myCellMember || []);
-        setCheckList(data?.myCheckList || []);
+        if (result && result?.ok) {
+            const data: CheckDto = await result.json();
+            setCellMember(data?.myCellMember || []);
+            setCheckList(data?.myCheckList || []);
+        }
         setLoading(false);
     }, [isLoading]);
 
@@ -86,7 +87,12 @@ export default function MemberCheck() {
                 />
                 <section className="border-l-2 border-r-2 border-b-4 border-black ml-2 mr-2 p-2 dark:bg-slate-400 shadow-slate-500/70">
                     {isLoading && <RequestLoading />}
-                    {!isLoading && <CheckList checkList={filteredCheckList} />}
+                    {!isLoading && (
+                        <CheckList
+                            checkList={filteredCheckList}
+                            fetchInitData={fetchInitData}
+                        />
+                    )}
                 </section>
             </main>
         </section>
