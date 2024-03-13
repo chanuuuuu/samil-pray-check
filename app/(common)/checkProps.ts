@@ -30,6 +30,7 @@ export function convertCheckList(queryList: any[]): Check[] {
                 worship,
                 community,
                 birth,
+                cellId,
             } = data;
             const hash = `${memberId}${weekId}`;
             if (exHash === hash && exInsertId > insertId) return;
@@ -40,6 +41,7 @@ export function convertCheckList(queryList: any[]): Check[] {
                 worship,
                 community,
                 gisu: getGisu(birth),
+                cellId,
             };
             result.push(checkList);
             exHash = hash;

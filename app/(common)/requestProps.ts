@@ -1,5 +1,6 @@
 export interface Member {
     groupId?: number;
+    cellId?: number;
     memberId: number;
     name: string;
     birth?: string;

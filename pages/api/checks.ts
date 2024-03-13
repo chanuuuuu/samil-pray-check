@@ -26,7 +26,7 @@ const fetchCheckInitData = ({
                 FROM ${MEMBER_TABLE}
                 WHERE groupId = ? AND cellId = ?`;
 
-    const requestQuery = `
+    const checkQuery = `
                 SELECT groupId, birth, memberId, insertId, name, cellId, worship, community
                 FROM ${CHECK_TABLE} JOIN Member USING (memberId, groupId)
                 WHERE groupId = ?
@@ -50,7 +50,7 @@ const fetchCheckInitData = ({
                     }) as Promise<Member[]>,
                     doConnectionQuery({
                         connection,
-                        queryState: requestQuery,
+                        queryState: checkQuery,
                         params: [groupId, `${nowWeekId}`],
                     }) as Promise<PrayerRequest[]>,
                     new Promise((resolve) => setTimeout(resolve, 1500)),
