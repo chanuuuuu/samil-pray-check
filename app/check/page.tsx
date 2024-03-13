@@ -10,6 +10,7 @@ import { CHECK_TYPE_CODE, checkTypes } from "../(common)/menuTypeProps";
 import { CheckDto, Check } from "../(common)/checkProps";
 import { Member } from "@/app/(common)/requestProps";
 import CheckList from "./checkList";
+import CheckTotal from "./checkTotal";
 
 export default function MemberCheck() {
     const { data: session } = useSession();
@@ -31,6 +32,7 @@ export default function MemberCheck() {
             cellId: `${member?.cellId || 0}`,
             groupId: `${member?.groupId || 0}`,
         });
+
         const result = await fetch("/api/checks?" + paramUrl, {
             method: "GET",
             headers: {
@@ -85,15 +87,23 @@ export default function MemberCheck() {
                     fetchInitData={fetchInitData}
                     menuTypes={checkTypes}
                 />
-                <section className="border-l-2 border-r-2 border-b-4 border-black ml-2 mr-2 p-2 dark:bg-slate-400 shadow-slate-500/70">
-                    {isLoading && <RequestLoading />}
-                    {!isLoading && (
-                        <CheckList
-                            checkList={filteredCheckList}
-                            fetchInitData={fetchInitData}
-                        />
-                    )}
-                </section>
+                {selectedMenuType === CHECK_TYPE_CODE.등록 && (
+                    <section className="border-l-2 border-r-2 border-b-4 border-black ml-2 mr-2 p-2 dark:bg-slate-400 shadow-slate-500/70">
+                        {isLoading && <RequestLoading />}
+                        {!isLoading && (
+                            <CheckList
+                                checkList={filteredCheckList}
+                                fetchInitData={fetchInitData}
+                            />
+                        )}
+                    </section>
+                )}
+                {selectedMenuType === CHECK_TYPE_CODE.팀별현황 && (
+                    <section className="border-l-2 border-r-2 border-b-4 border-black ml-2 mr-2 p-2 dark:bg-slate-400 shadow-slate-500/70">
+                        {isLoading && <RequestLoading />}
+                        {!isLoading && <CheckTotal checkList={checkList} />}
+                    </section>
+                )}
             </main>
         </section>
     );
