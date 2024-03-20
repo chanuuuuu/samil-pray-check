@@ -1,12 +1,12 @@
 "use client";
-import { Check } from "../(common)/checkProps";
-import { useMemo, useState, useEffect, useCallback } from "react";
+import { Check, CheckTotalType } from "../(common)/checkProps";
+import { useMemo } from "react";
 
 export default function CheckTotal(props: { checkList: Check[] }) {
     const { checkList } = props;
 
     const total = useMemo(() => {
-        const result = {
+        const result: CheckTotalType = {
             community: {},
             worship: {},
         };

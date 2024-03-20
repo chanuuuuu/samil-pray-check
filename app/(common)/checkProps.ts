@@ -75,3 +75,8 @@ export function convertMemberList(targetMemberList: Member[]) {
         };
     });
 }
+
+export interface CheckTotalType {
+    community: { [key: number]: string[] };
+    worship: { [key: number]: string[] };
+}
