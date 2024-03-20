@@ -78,7 +78,7 @@ export default function MemberCheck() {
 
     return (
         <section className="flex h-m-screen flex-col text-sm tracking-tight leading-tight">
-            <Header toggleMode={() => {}} />
+            <Header toggleMode={() => {}} member={member} />
             <main className="mt-3 mb-2 max-h-m-screen overflow-y-scroll">
                 <ToggleMenu
                     selectedMenuType={selectedMenuType}
