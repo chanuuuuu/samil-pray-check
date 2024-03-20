@@ -18,7 +18,7 @@ export default function MemberCheck() {
     const [cellMember, setCellMember] = useState<Member[]>([]);
     const [checkList, setCheckList] = useState<Check[]>([]);
     const [selectedMenuType, setMenuType] = useState<string>(
-        CHECK_TYPE_CODE.등록
+        CHECK_TYPE_CODE.팀별현황
     );
     const [isLoading, setLoading] = useState<boolean>(false);
 
