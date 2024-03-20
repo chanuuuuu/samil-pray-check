@@ -1,4 +1,5 @@
 import { MemberStorage } from "@/app/queryProps";
+import { Member } from "@/app/(common)/requestProps";
 import { Session } from "next-auth";
 
 const SAMIL_PR_LS_KEY = process.env.SAMIL_PR_LS_KEY || "temp-key";
@@ -29,6 +30,14 @@ export function getInsertId() {
 
 export function getWeekDay(day?: string) {
     const now = day ? new Date(day) : new Date();
+    const weekDay = getWeekCount(now);
+    const year = now.getFullYear().toString().slice(2);
+    const formattedWeekDay = (weekDay < 10 ? "0" : "") + weekDay;
+
+    return parseInt(year + formattedWeekDay);
+}
+
+export function getWeekCount(now: Date) {
     const start = new Date(now.getFullYear(), 0, 1);
 
     let diffDate = now.getTime() - start.getTime();
@@ -37,10 +46,7 @@ export function getWeekDay(day?: string) {
     var weekDay = Math.floor(diffDate / 7) + 1;
     if (now.getDay() < start.getDay()) weekDay += 1;
 
-    const year = now.getFullYear().toString().slice(2);
-    const formattedWeekDay = (weekDay < 10 ? "0" : "") + weekDay;
-
-    return parseInt(year + formattedWeekDay);
+    return weekDay;
 }
 
 export function activeElement(element: HTMLElement | null) {

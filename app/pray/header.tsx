@@ -1,9 +1,14 @@
 import { signOut } from "next-auth/react";
+import { useMemo } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { deleteMemberInLocalStorage } from "@/app/utils";
+import { MemberStorage } from "../queryProps";
 
-export default function Header(props: { toggleMode: (type: string) => void }) {
-    const { toggleMode } = props;
+export default function Header(props: {
+    toggleMode: (type: string) => void;
+    member: MemberStorage | null;
+}) {
+    const { toggleMode, member } = props;
     const router = useRouter();
     const pathname = usePathname();
     const isPrayerPage = pathname?.includes("home");
@@ -12,6 +17,11 @@ export default function Header(props: { toggleMode: (type: string) => void }) {
         deleteMemberInLocalStorage();
         signOut({ callbackUrl: "/" });
     }
+
+    const isLeader = useMemo(() => {
+        if (!member) return false;
+        return member?.role >= 1;
+    }, [member]);
 
     return (
         <div className="z-30 dark:bg-slate-400 w-full min-h-max max-h-6 flex flex-row justify-between  border-b-2 border-black">
@@ -30,12 +40,15 @@ export default function Header(props: { toggleMode: (type: string) => void }) {
                         >
                             기도모드
                         </button>
-                        <button
-                            className="border-solid shadow-xs border-2 border-l-1 border-r-1 border-gray-700 shadow-black pl-1 pr-1"
-                            onClick={() => router.push("/check")}
-                        >
-                            출석부
-                        </button>
+                        {isLeader && (
+                            <button
+                                className="border-solid shadow-xs border-2 border-l-1 border-r-1 border-gray-700 shadow-black pl-1 pr-1"
+                                onClick={() => router.push("/check")}
+                                //hidden
+                            >
+                                출석부
+                            </button>
+                        )}
                     </>
                 )}
                 {!isPrayerPage && (

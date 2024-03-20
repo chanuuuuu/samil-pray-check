@@ -3,24 +3,27 @@ import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import RequestGroupList from "../request/requestGroupList";
 import Header from "../pray/header";
-import ReqeustTypeMenu from "../pray/requestTypeMenu";
 import {
     HomeDto,
     PrayerRequest,
     getPrayerRequestGroup,
-} from "../request/requestProps";
+} from "../(common)/requestProps";
 import RequestLoading from "../request/requestLoading";
 import PrayMode from "../request/prayMode";
 import RegistMode from "../request/registMode";
 import { useSession } from "next-auth/react";
 import { getMember } from "../utils";
+import { requestTypes, REQUEST_TYPE_CODE } from "../(common)/menuTypeProps";
+import ToggleMenu from "../(common)/toggleMenu";
 
 export default function Home() {
     const { data: session } = useSession();
     const closedMember = useRef(new Set<number>());
     const router = useRouter();
 
-    const [menuType, setMenuType] = useState<string>("01");
+    const [selectedMenuType, setMenuType] = useState<string>(
+        REQUEST_TYPE_CODE.조별
+    );
     const [isLoading, setLoading] = useState<boolean>(false);
     const [isPrayMode, setPrayMode] = useState<boolean>(false);
     const [isRegistMode, setRegistMode] = useState<boolean>(false);
@@ -62,13 +65,13 @@ export default function Home() {
     }, [prayerRequests]);
 
     const filteredGroups = useMemo(() => {
-        if (menuType == "01") {
+        if (selectedMenuType == REQUEST_TYPE_CODE.조별) {
             return requestGroups.filter((group) =>
                 cellMember.includes(group.memberId)
             );
         }
         return requestGroups;
-    }, [menuType, requestGroups]);
+    }, [selectedMenuType, requestGroups]);
 
     function toggleMode(type: string) {
         switch (type) {
@@ -85,14 +88,14 @@ export default function Home() {
 
     return (
         <section className="flex h-m-screen flex-col text-sm tracking-tight leading-tight">
-            안녕하세요
-            <Header toggleMode={toggleMode} />
+            <Header toggleMode={toggleMode} member={member} />
             <main className="mt-3 mb-2 max-h-m-screen overflow-y-scroll">
-                <ReqeustTypeMenu
-                    menuType={menuType}
+                <ToggleMenu
+                    selectedMenuType={selectedMenuType}
                     setMenuType={setMenuType}
                     setLoading={setLoading}
                     fetchInitData={fetchInitData}
+                    menuTypes={requestTypes}
                 />
                 <section className="border-l-2 border-r-2 border-b-4 border-black ml-2 mr-2 p-2 dark:bg-slate-400 shadow-slate-500/70">
                     {isLoading && <RequestLoading />}

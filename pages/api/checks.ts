@@ -2,37 +2,39 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { doConnectionQuery, doQuery } from "./models/doQuery";
 import pool from "./models/connectionPool";
 import { getWeekDay, getInsertId } from "@/app/utils";
+import { PrayerRequest } from "@/app/(common)/requestProps";
 import {
-    PrayerRequest,
-    convertPrayerResult,
-    convertCellMember,
-    HomeDto,
-} from "@/app/(common)/requestProps";
+    Check,
+    CheckDto,
+    convertCheckList,
+    convertMemberList,
+} from "@/app/(common)/checkProps";
+import { Member } from "@/app/(common)/requestProps";
 
 const MEMBER_TABLE = process.env.MEMBER_TARGET_TABLE;
-const PRAYER_REQUEST_TABLE = process.env.PRAYER_REQUEST_TARGET_TABLE;
+const CHECK_TABLE = process.env.CHECK_TARGET_TABLE;
 
-const fetchHomeInitData = ({
+const fetchCheckInitData = ({
     cellId,
     groupId,
 }: {
     cellId: string;
     groupId: string;
-}): Promise<HomeDto> => {
+}): Promise<CheckDto> => {
     const cellMemberQuery = `
-                SELECT memberId
+                SELECT groupId, memberId, name, birth
                 FROM ${MEMBER_TABLE}
                 WHERE groupId = ? AND cellId = ?`;
 
-    const requestQuery = `
-                SELECT memberId, requestId, weekId, text, insertId, name, cellId
-                FROM ${PRAYER_REQUEST_TABLE} JOIN Member USING (memberId)
+    const checkQuery = `
+                SELECT groupId, birth, memberId, insertId, name, cellId, worship, community
+                FROM ${CHECK_TABLE} JOIN Member USING (memberId, groupId)
                 WHERE groupId = ?
-                AND weekId >= ?
-                ORDER BY memberId, weekId DESC, insertId DESC;
+                AND weekId = ?
+                ORDER BY memberId, insertId DESC
                 `;
 
-    const nowWeekId = getWeekDay() - 2;
+    const nowWeekId = getWeekDay(); // 이번주에 대해서만 확인
 
     return new Promise((resolve, reject) => {
         pool.getConnection((err, connection) => {
@@ -45,26 +47,25 @@ const fetchHomeInitData = ({
                         connection,
                         queryState: cellMemberQuery,
                         params: [groupId, cellId],
-                    }) as Promise<number[]>,
+                    }) as Promise<Member[]>,
                     doConnectionQuery({
                         connection,
-                        queryState: requestQuery,
-                        params: [groupId, nowWeekId],
+                        queryState: checkQuery,
+                        params: [groupId, `${nowWeekId}`],
                     }) as Promise<PrayerRequest[]>,
                     new Promise((resolve) => setTimeout(resolve, 1500)),
                 ])
-                    .then(([cellMemberData, prayerRequestData, unknown]) => {
-                        const myCellMember = convertCellMember(cellMemberData);
-                        const myPrayerRequests =
-                            convertPrayerResult(prayerRequestData);
+                    .then(([cellMemberData, checkListData, unknown]) => {
+                        const myCellMember = convertMemberList(cellMemberData);
+                        const myCheckList = convertCheckList(checkListData);
                         connection.release();
                         resolve({
                             myCellMember,
-                            myPrayerRequests,
+                            myCheckList,
                         });
                     })
                     .catch((errorData) => {
-                        errorData.point = "fetchHomeInitData()";
+                        errorData.point = "fetchCheckInitData()";
                         connection.release();
                         reject(errorData);
                     });
@@ -73,30 +74,29 @@ const fetchHomeInitData = ({
     });
 };
 
-const insertPrayerRequest = (
-    memberId: number,
-    prayerRequests: string[]
-): Promise<number> =>
+const insertCheckList = (checkList: Check[]): Promise<number> =>
     new Promise((resolve, reject) => {
         const insertId = getInsertId();
         const weekId = getWeekDay();
-        const rawQuery = prayerRequests.reduce(
-            (str, requests) =>
-                `${str}('${memberId}', '${requests}', '${insertId}', '${weekId}'),`,
+        const rawQuery = checkList.reduce(
+            (str, { groupId, memberId, community, worship }) =>
+                `${str}('${groupId}', '${weekId}', '${memberId}', '${insertId}', '${
+                    !!community ? 1 : 0
+                }', '${!!worship ? 1 : 0}'),`,
             ""
         );
         const conditionQuery = `${rawQuery.slice(0, -1)}`;
         const insertQuery = `
-        INSERT INTO ${PRAYER_REQUEST_TABLE}
-        (memberId, text, insertId, weekId)
+        INSERT INTO ${CHECK_TABLE}
+        (groupId, weekId, memberId, insertId, worship, community)
         VALUES ${conditionQuery};
         `;
         Promise.all([
             doQuery(insertQuery, []),
-            new Promise((resolve) => setTimeout(resolve, 1500)),
+            new Promise((resolve) => setTimeout(resolve, 1000)),
         ])
             .then(() => {
-                resolve(prayerRequests.length);
+                resolve(checkList.length);
             })
             .catch((error) => {
                 reject(error);
@@ -109,10 +109,10 @@ export default async function handler(
 ) {
     if (req?.headers?.referer) {
         const url = new URL(req.headers.referer);
-        if (url.pathname.includes("home")) {
+        if (url.pathname.includes("check")) {
             if (req.method === "POST") {
-                const { memberId, prayerRequests } = req.body;
-                await insertPrayerRequest(memberId, prayerRequests)
+                const { checkList } = req.body;
+                await insertCheckList(checkList)
                     .then(() => {
                         res.status(201).end();
                     })
@@ -120,13 +120,14 @@ export default async function handler(
                         console.log(error);
                         res.status(501).end();
                     });
+                res.status(201).end();
             } else if (req.method === "GET") {
-                let result: HomeDto = {
+                let result: CheckDto = {
                     myCellMember: [],
-                    myPrayerRequests: [],
+                    myCheckList: [],
                 };
 
-                await fetchHomeInitData({
+                await fetchCheckInitData({
                     cellId: req.query.cellId as string,
                     groupId: req.query.groupId as string,
                 })
