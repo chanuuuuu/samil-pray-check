@@ -18,10 +18,12 @@ export function getInsertId() {
     const day = ("0" + now.getDate()).slice(-2);
     const hour = now.getHours();
     const min = now.getMinutes();
+    const sec = now.getSeconds();
     const formattedHour = (hour < 10 ? "0" : "") + hour;
     const formattedMin = (min < 10 ? "0" : "") + min;
+    const formattedSec = (sec < 10 ? "0" : "") + sec;
     const result = parseInt(
-        `${year}${month}${day}${formattedHour}${formattedMin}`
+        `${year}${month}${day}${formattedHour}${formattedMin}${formattedSec}`
     );
     if (result) return result;
     return 0;
