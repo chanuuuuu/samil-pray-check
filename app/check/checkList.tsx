@@ -81,6 +81,7 @@ export default function CheckList(props: {
                                     onClick={handleClick}
                                     data-index={index}
                                     data-type="worship"
+                                    data-member-id={check?.memberId}
                                     defaultChecked={check?.worship}
                                 />
                                 <label
