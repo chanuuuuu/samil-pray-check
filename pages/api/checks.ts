@@ -80,15 +80,14 @@ const insertCheckList = (checkList: Check[]): Promise<number> =>
         const weekId = getWeekDay();
         const rawQuery = checkList.reduce(
             (str, { groupId, memberId, community, worship }) =>
-                `${str}('${groupId}', '${weekId}', '${memberId}', '${insertId}', '${
-                    !!community ? 1 : 0
-                }', '${!!worship ? 1 : 0}'),`,
+                `${str}('${groupId}', '${weekId}', '${memberId}', '${insertId}', 
+            '${!!community ? 1 : 0}', '${!!worship ? 1 : 0}'),`,
             ""
         );
         const conditionQuery = `${rawQuery.slice(0, -1)}`;
         const insertQuery = `
         INSERT INTO ${CHECK_TABLE}
-        (groupId, weekId, memberId, insertId, worship, community)
+        (groupId, weekId, memberId, insertId, community, worship)
         VALUES ${conditionQuery};
         `;
         Promise.all([

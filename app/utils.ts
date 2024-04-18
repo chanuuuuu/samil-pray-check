@@ -1,8 +1,7 @@
 import { MemberStorage } from "@/app/queryProps";
-import { Member } from "@/app/(common)/requestProps";
 import { Session } from "next-auth";
 
-const SAMIL_PR_LS_KEY = process.env.SAMIL_PR_LS_KEY || "temp-key";
+const SAMIL_PR_LS_KEY = process.env.SAMIL_PR_LS_KEY || "samil-pr-member";
 
 export const MAX_INPUT_LENGTH = 70;
 export const REGIST_GUIDE = {
