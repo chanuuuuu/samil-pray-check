@@ -60,8 +60,11 @@ export default function CheckTotal(props: { checkList: Check[] }) {
                 </div>
                 {total.community && total.community.length > 0 ? (
                     <div className=" dark:text-white pb-1">
-                        {total.community.map((group) => (
-                            <div className="pt-1 pl-2 pr-2 text-sm pb-1 font-semibold">
+                        {total.community.map((group, index) => (
+                            <div
+                                className="pt-1 pl-2 pr-2 text-sm pb-1 font-semibold"
+                                key={`group_${index}_section`}
+                            >
                                 {group.join(", ")}
                             </div>
                         ))}
